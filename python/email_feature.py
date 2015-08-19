@@ -16,34 +16,35 @@ sensors = {'temperature': '', 'humidity': '', 'distance':'', 'xtilt':'0', 'ytilt
 
 def convertlatitudeandlogitude(latitude, longitude):
 
-	latitude = latitude.split(".")
-	latitudeday = long(latitude[0][0:len(latitude[0])-2])
-	latitudeminute = float(latitude[0][len(latitude[0])-2:len(latitude[0])]) + (float(latitude[1])/100)
-	
-	if latitudeday >=0 :
-		
-		latitude = long(latitudeday) + (float(latitudeminute)/60)	
-	else:
-			
-		latitude = long(latitudeday) - (float(latitudeminute)/60)
-	
-	longitude = longitude.split(".")
-	longitudeday = long(longitude[0][0:len(longitude[0])-2])
-	longitudedeminute = float(longitude[0][len(longitude[0])-2:len(longitude[0])]) + (float(longitude[1])/100)
-	
-	if longitudeday >=0 :
-		
-		longitude = long(longitudeday) + (float(longitudedeminute)/60)
-	else:
-			
-		longitude = long(longitudeday) - (float(longitudedeminute)/60)
-		
-	return latitude, longitude
+    latitude = latitude.split(".")
+    latitudeday = long(latitude[0][0:len(latitude[0])-2])
+    latitudeminute = float(latitude[0][len(latitude[0])-2:len(latitude[0])]) + (float(latitude[1])/100)
+    
+    if latitudeday >=0 :
+        
+        latitude = long(latitudeday) + (float(latitudeminute)/60)	
+    else:
+            
+        latitude = long(latitudeday) - (float(latitudeminute)/60)
+    
+    longitude = longitude.split(".")
+    longitudeday = long(longitude[0][0:len(longitude[0])-2])
+    longitudedeminute = float(longitude[0][len(longitude[0])-2:len(longitude[0])]) + (float(longitude[1])/100)
+    
+    if longitudeday >=0 :
+        
+        longitude = long(longitudeday) + (float(longitudedeminute)/60)
+    else:
+            
+        longitude = long(longitudeday) - (float(longitudedeminute)/60)
+        
+    return latitude, longitude
 	
 
 
 
 def setgps():
+    
     try:                                                                                                   
         sensors['speed'] = value.get('speed')
         sensors['high'] =  value.get('high')
@@ -109,32 +110,37 @@ def checkfallen():
 
 
 def main():
-	
+    print("Script Linio iniciado")	
     bucle = True
     fallen = False
     
     while (bucle):
-        
-        setdistance()
-        settemperatureandhumididy()
-        xyztilt()
-        setgps()
-        if (fallen == False):
-            fallen=checkfallen()
-	if (fallen == True and float(-30)<float(sensors["ytilt"])<float(30)):
-	    fallen = False
-	    
-    	
-    	data = "temperature|" + str(sensors['temperature']) + "#humidity|" + \
-    			str(sensors['humidity'])+ '#distance|'+str(sensors['distance'])+ \
-    			"#xtilt|"+str(sensors['xtilt'])+"#ytilt|"+str(sensors['ytilt'])+"#ztilt|"+ \
-    			str(sensors['ztilt'])+ "#speed|"+str(sensors['speed']) +"#high|"+str(sensors['high']) + \
-    			"#gps|"+ str(sensors['latitude']) +"/"+ str(sensors['longitude'])
-    	
-    	print str(data)
     
-    	sendvalue(data)
-    	time.sleep(3)
+        try:
+    
+            setdistance()
+            settemperatureandhumididy()
+            xyztilt()
+            setgps()
+            if (fallen == False):
+                fallen=checkfallen()
+            if (fallen == True and float(-30)<float(sensors["ytilt"])<float(30)):
+                fallen = False
+        
+        
+            data = "temperature|" + str(sensors['temperature']) + "#humidity|" + \
+                    str(sensors['humidity'])+ '#distance|'+str(sensors['distance'])+ \
+                    "#xtilt|"+str(sensors['xtilt'])+"#ytilt|"+str(sensors['ytilt'])+"#ztilt|"+ \
+                    str(sensors['ztilt'])+ "#speed|"+str(sensors['speed']) +"#high|"+str(sensors['high']) + \
+                    "#gps|"+ str(sensors['latitude']) +"/"+ str(sensors['longitude'])
+        
+            print str(data)
+    
+            sendvalue(data)
+            time.sleep(3)
+        
+        except:
+            print "ERROR en el WHILE"
 
 
 if __name__ == '__main__':
