@@ -13,7 +13,7 @@ def sendemail(latitude, longitude):
      
     # Datos
     username = 'luisdel87@gmail.com'
-    password = 'estupendisimo'
+    password = 'xxxxx'
      
     # Enviando el correo
     server = smtplib.SMTP('smtp.gmail.com:587')
